@@ -1,0 +1,50 @@
+﻿@using RemDijital.EmlakTakip.Web.Models.Common.Modals
+@model RemDijital.EmlakTakip.Web.Models.Estates.EstateListViewModel
+<div class="abp-advanced-search">
+    <form id="EstatesSearchForm" class="form-horizontal">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <button type="button" class="btn bg-blue btn-search">
+                    <span class="fas fa-search" aria-hidden="true"></span>
+                </button>
+            </div>
+            <input type="text" name="Keyword" class="form-control txt-search" />
+            @*@Html.DropDownListFor(
+                    x => x.EstateTypes,
+                    new SelectList(Model.EstateTypes, "Value", "Text")
+                )*@
+            <select class="form-control" name="EstateTypeId">
+                @if (Model.EstateTypes != null)
+                {
+                    @foreach (var item in Model.EstateTypes)
+                    {
+                        @if (item.Value == "")
+                        {
+                            <option value="0">@item.Text</option> 
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                }
+            </select>
+            <select class="form-control" name="SaleTypeId">
+                @if (Model.SaleTypes != null)
+                {
+                    @foreach (var item in Model.SaleTypes)
+                    {
+                        @if (item.Value == "")
+                        {
+                            <option value="0">@item.Text</option> 
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+    </form>
+</div>

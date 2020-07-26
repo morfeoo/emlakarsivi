@@ -1,0 +1,72 @@
+﻿@using RemDijital.EmlakTakip.Web.Startup
+@using RemDijital.EmlakTakip.Web.Models.Common.Modals
+@model RemDijital.EmlakTakip.Web.Models.Estates.EstateListViewModel
+@{ ViewBag.Title = L("Estate");
+    ViewBag.CurrentPageName = PageNames.Estates; }
+@section scripts
+{
+    <environment names="Development">
+        <script src="~/view-resources/Views/Estates/Index.js" asp-append-version="true"></script>
+    </environment>
+
+    <environment names="Staging,Production">
+        <script src="~/view-resources/Views/Estates/Index.min.js" asp-append-version="true"></script>
+    </environment>
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>Emlak Listesi</h1>
+            </div>
+            <div class="col-sm-6">
+                <a href="@Url.Action("AddOrEdit","Estate")" class="btn bg-blue float-sm-right">
+                    <i class="fa fa-plus-square"></i>
+                    @L("Create")
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-12">
+                                @await Html.PartialAsync("~/Views/Estate/Search.cshtml")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="EstateTable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>@L("Name")</th>
+                                        <th>Fiyat</th>
+                                        <th style="width: 150px">@L("Actions")</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@*@await Html.PartialAsync("~/Views/Estates/_CreateModal.cshtml")*@
+
+<div class="modal fade" id="RoleEditModal" tabindex="-1" role="dialog" aria-labelledby="RoleEditModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>

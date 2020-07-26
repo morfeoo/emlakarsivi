@@ -1,0 +1,343 @@
+﻿@using RemDijital.EmlakTakip.Web.Startup
+@using RemDijital.EmlakTakip.Web.Models.Common.Modals
+@model RemDijital.EmlakTakip.Web.Models.Estates.EstateAddOrEditViewModel;
+@{
+    @if (Model.estate == null)
+    {
+        ViewData["Title"] = "Emlak Ekle";
+    }
+    else
+    {
+        ViewData["Title"] = "Emlak Düzenle";
+    }
+
+}
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+@section scripts
+{
+    <environment names="Development">
+        <script src="~/view-resources/Views/Estates/AddOrEdit.js" asp-append-version="true"></script>
+    </environment>
+
+    <environment names="Staging,Production">
+        <script src="~/view-resources/Views/Estates/AddOrEdit.min.js" asp-append-version="true"></script>
+    </environment>
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                @if (Model.estate == null)
+                {
+                    <h1>Emlak Ekle</h1>
+                }
+                else
+                {
+                    <h1>@Model.estate.Name</h1>
+                }
+            </div>
+            <div class="col-sm-6">
+                <a href="@Url.Action("Index","Estate")" class="btn bg-blue float-sm-right">
+                    <i class="fa fa-plus-square"></i>
+                    Listeye Dön 
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+@if (Model.estate == null)
+{
+    <section class="content">
+        <div class="container-fluid AddOrEditModal">
+            <form name="EstateAddOrEditForm" role="form" class="form-horizontal">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <select class="form-control" id="CitySelect" name="CityId" required>
+                                @if (Model.Cities != null)
+                                {
+                                    <option value="">İl Seçiniz..</option>
+                                    @foreach (var item in Model.Cities)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" id="DistrictSelect" name="DistrictId" required>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" id="MahalleSelect" name="MahalleId" required>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <select class="form-control" id="EstateTypeSelect" name="EstateTypeId" required>
+                                @if (Model.EstateTypes != null)
+                                {
+                                    <option value="">Kategori Seçiniz..</option>
+                                    @foreach (var item in Model.EstateTypes)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control" id="SaleTypeSelect" name="SaleTypeId" required>
+                                @if (Model.SaleTypes != null)
+                                {
+                                    <option value="">Satış Tipi Seçiniz..</option>
+                                    @foreach (var item in Model.SaleTypes)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Adı</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="Name" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Metrekare</label>
+                        <div class="col-md-6">
+                            <input type="number" class="form-control" name="Meter" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Fiyat</label>
+                        <div class="col-md-6">
+                            <input type="number" class="form-control" name="Price" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Adres</label>
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="Address"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Açıklama</label>
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="Description"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary save-button">@L("Save")</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+}
+else
+{
+    <section class="content">
+        <div class="container-fluid AddOrEditModal">
+            <form id="estateAddOrEditForm" name="EstateAddOrEditForm" role="form" class="form-horizontal">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <input type="hidden" class="form-control" name="Id" value="@Model.estate.Id" />
+                        <div class="col-md-4">
+                            <select class="form-control" id="CitySelect" name="CityId" required>
+                                @if (Model.Cities != null)
+                                {
+                                    <option value="">İl Seçiniz..</option>
+                                    @foreach (var item in Model.Cities)
+                                    {
+                                        @if (Model.estate.CityId == item.Id)
+                                        {
+                                            <option value="@item.Id" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" id="DistrictSelect" name="DistrictId" required>
+                                @if (Model.Districts != null)
+                                {
+                                    <option value="">İlçe Seçiniz..</option>
+                                    @foreach (var item in Model.Districts)
+                                    {
+                                        @if (Model.estate.DistrictId == item.Id)
+                                        {
+                                            <option value="@item.Id" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" id="MahalleSelect" name="MahalleId" required>
+                                @if (Model.Mahalles != null)
+                                {
+                                    <option value="">Mahalle Seçiniz..</option>
+                                    @foreach (var item in Model.Mahalles)
+                                    {
+                                        @if (Model.estate.MahalleId == item.Id)
+                                        {
+                                            <option value="@item.Id" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <select class="form-control" id="EstateTypeSelect" name="EstateTypeId" required>
+                                @if (Model.EstateTypes != null)
+                                {
+                                    <option value="">Kategori Seçiniz..</option>
+                                    @foreach (var item in Model.EstateTypes)
+                                    {
+                                        @if (Model.estate.EstateTypeId == item.Id)
+                                        {
+                                            <option value="@item.Id" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control" id="SaleTypeSelect" name="SaleTypeId" required>
+                                @if (Model.SaleTypes != null)
+                                {
+                                    <option value="">Satış Tipi Seçiniz..</option>
+                                    @foreach (var item in Model.SaleTypes)
+                                    {
+                                        @if (Model.estate.SaleTypeId == item.Id)
+                                        {
+                                            <option value="@item.Id" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Adı</label>
+                        <div class="col-md-6">
+                            <input type="text" id="" class="form-control" name="Name" value="@Model.estate.Name" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Metrekare</label>
+                        <div class="col-md-6">
+                            <input type="number" class="form-control" name="Meter" value="@Model.estate.Meter" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Fiyat</label>
+                        <div class="col-md-6">
+                            <input type="number" class="form-control" name="Price" value="@Model.estate.Price" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Adres</label>
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="Address">@Model.estate.Address</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Açıklama</label>
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="Description">@Model.estate.Description</textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary save-button">@L("Save")</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+}
+<script>
+    $('#CitySelect').change(function () {
+        var cityId = $(this).val();
+        debugger;
+        $('#DistrictSelect').html("");
+        $('#MahalleSelect').html("");
+        var posting = $.ajax({
+            type: "GET",
+            url: "GetDistrict/" + cityId,
+            success: (function (data) {
+                var html = "<option value=''>İlçe Seçiniz..</option>";
+                $.each(data.result, function (index, value) {
+                    @*if (@Model.estate != null)
+                    {
+                        if (@Model.estate.DistrictId == data.result[index].id) {
+                            html += "<option selected value=" + data.result[index].id + ">" + data.result[index].name + "</option>";
+                        } else {
+                            html += "<option value=" + data.result[index].id + ">" + data.result[index].name + "</option>";
+                        }
+                    }
+                    else
+                    {
+                        html += "<option value=" + data.result[index].id + ">" + data.result[index].name + "</option>";
+                    }*@
+                    html += "<option value=" + data.result[index].id + ">" + data.result[index].name + "</option>";
+                });
+                $('#DistrictSelect').html(html);
+            }),
+            dataType: "json"
+        });
+    });
+    $('#DistrictSelect').change(function () {
+        var cityId = $(this).val();
+        $('#MahalleSelect').html("");
+        var posting = $.ajax({
+            type: "GET",
+            url: "GetMahalle/" + cityId,
+            success: (function (data) {
+                var html = "<option value=''>Mahalle Seçiniz..</option>";
+                $.each(data.result, function (index, value) {
+                    @*if (@Model.estate != null)
+                    {
+                        if (@Model.estate.MahalleId == data.result[index].id) {
+                            html += "<option selected value=" + data.result[index].id + ">" + data.result[index].name + "</option>";
+                        } else {
+                            html += "<option value=" + data.result[index].id + ">" + data.result[index].name + "</option>";
+                        }
+                    }
+                    else
+                    {
+                        html += "<option value=" + data.result[index].id + ">" + data.result[index].name + "</option>";
+                    }*@
+                    html += "<option value=" + data.result[index].id + ">" + data.result[index].name + "</option>";
+                });
+                $('#MahalleSelect').html(html);
+            }),
+            dataType: "json"
+        });
+    });
+</script>
